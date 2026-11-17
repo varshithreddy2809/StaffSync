@@ -1,0 +1,372 @@
+
+/* ================================
+   Authentication Page
+================================ */
+
+.auth-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 35px 20px;
+  background: #f1f5f9;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 1050px;
+  min-height: 620px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 15px 45px rgba(15, 23, 42, 0.10);
+}
+
+/* ================================
+   Left Section
+================================ */
+
+.auth-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 45px;
+  background: #172554;
+  color: #ffffff;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.auth-brand h2 {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.auth-welcome {
+  max-width: 390px;
+}
+
+.auth-welcome h1 {
+  font-size: 38px;
+  line-height: 1.2;
+  margin: 0 0 18px;
+  font-weight: 700;
+}
+
+.auth-welcome p {
+  color: #cbd5e1;
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.auth-footer {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* ================================
+   Right Section
+================================ */
+
+.auth-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 45px;
+}
+
+.login-form-container {
+  width: 100%;
+  max-width: 390px;
+}
+
+.login-heading {
+  margin-bottom: 32px;
+}
+
+.login-heading h2 {
+  color: #172554;
+  font-size: 29px;
+  font-weight: 700;
+  margin: 0 0 9px;
+}
+
+.login-heading p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ================================
+   Form Fields
+================================ */
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 9px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.input-wrapper {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-wrapper:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.input-wrapper.input-error {
+  border-color: #dc2626;
+}
+
+.input-icon {
+  flex-shrink: 0;
+  color: #64748b;
+  font-size: 18px;
+}
+
+.input-wrapper input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #172554;
+  font-size: 14px;
+}
+
+.input-wrapper input::placeholder {
+  color: #94a3b8;
+}
+
+.password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.error-message {
+  display: block;
+  margin-top: 6px;
+  color: #dc2626;
+  font-size: 12px;
+}
+
+/* ================================
+   Forgot Password
+================================ */
+
+.forgot-password {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -8px;
+  margin-bottom: 25px;
+}
+
+.forgot-password a {
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* ================================
+   Login Button
+================================ */
+
+.login-button {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-button:hover {
+  background: #1d4ed8;
+}
+
+.login-message {
+  margin: 14px 0 0;
+  color: #2563eb;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ================================
+   Register Link
+================================ */
+
+.register-link {
+  margin-top: 28px;
+  color: #64748b;
+  font-size: 13px;
+  text-align: center;
+}
+
+.register-link a {
+  color: #2563eb;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* ================================
+   Tablet Responsive
+================================ */
+
+@media (max-width: 768px) {
+  .auth-page {
+    padding: 20px;
+  }
+
+  .auth-container {
+    max-width: 520px;
+    min-height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .auth-left {
+    min-height: 200px;
+    padding: 28px;
+  }
+
+  .auth-welcome {
+    margin-top: 28px;
+  }
+
+  .auth-welcome h1 {
+    font-size: 27px;
+    margin-bottom: 10px;
+  }
+
+  .auth-welcome p {
+    font-size: 13px;
+  }
+
+  .auth-footer {
+    display: none;
+  }
+
+  .auth-right {
+    padding: 35px 28px;
+  }
+}
+
+/* ================================
+   Mobile Responsive
+================================ */
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 0;
+    align-items: stretch;
+    background: #ffffff;
+  }
+
+  .auth-container {
+    min-height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .auth-left {
+    min-height: 175px;
+    padding: 25px 22px;
+  }
+
+  .brand-logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .auth-brand h2 {
+    font-size: 17px;
+  }
+
+  .auth-welcome {
+    margin-top: 22px;
+  }
+
+  .auth-welcome h1 {
+    font-size: 24px;
+  }
+
+  .auth-welcome p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .auth-right {
+    align-items: flex-start;
+    padding: 35px 22px;
+  }
+
+  .login-heading h2 {
+    font-size: 25px;
+  }
+}
