@@ -1,4 +1,5 @@
 package com.springproject01.employeeserviceportal.controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springproject01.employeeserviceportal.entity.EmployeeObject;
 import com.springproject01.employeeserviceportal.service.EmployeeService;
 
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("api/v1")
 public class EmployeeController {

@@ -1,17 +1,18 @@
 
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 
 import Dashboard from "./pages/Dashboard";
+import EmployeeList from "./pages/EmployeeList";
+import AddEmployee from "./pages/AddEmployee";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import "./App.css";
 
-function DashboardLayout() {
+function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -30,8 +31,7 @@ function DashboardLayout() {
 
       <div className="main-content">
         <Navbar setSidebarOpen={setSidebarOpen} />
-
-        <Dashboard />
+        {children}
       </div>
     </div>
   );
@@ -41,12 +41,42 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Authentication Pages */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-        {/* Dashboard */}
-        <Route path="/" element={<DashboardLayout />} />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        <Route
+          path="/"
+          element={
+            <DashboardLayout>
+              <Dashboard />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/employees"
+          element={
+            <DashboardLayout>
+              <EmployeeList />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/add-employee"
+          element={
+            <DashboardLayout>
+              <AddEmployee />
+            </DashboardLayout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

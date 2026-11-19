@@ -1,141 +1,182 @@
 
+import { useEffect, useState } from "react";
 import {
   FiUsers,
-  FiUserCheck,
-  FiUserPlus,
   FiDollarSign,
+  FiMapPin,
+  FiUserPlus,
   FiArrowUpRight
 } from "react-icons/fi";
 
+import { getAllEmployees } from "../services/EmployeeService";
 import "./Dashboard.css";
 
 function Dashboard() {
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let ignore = false;
+
+    const loadEmployees = async () => {
+      try {
+        const response = await getAllEmployees();
+
+        if (!ignore) {
+          setEmployees(response.data);
+        }
+      } catch (err) {
+        console.error("Error fetching employees:", err);
+
+        if (!ignore) {
+          setError(
+            "Unable to load employee data. Please check the backend."
+          );
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadEmployees();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const totalEmployees = employees.length;
+
+  const totalSalary = employees.reduce(
+    (total, employee) => total + Number(employee.salary || 0),
+    0
+  );
+
+  const averageSalary =
+    totalEmployees > 0 ? totalSalary / totalEmployees : 0;
+
+  const totalCities = new Set(
+    employees.map(employee => employee.city).filter(Boolean)
+  ).size;
 
   const stats = [
     {
       title: "Total Employees",
-      value: "248",
+      value: totalEmployees,
       icon: <FiUsers />,
-      color: "blue",
-      change: "+12% this month"
-    },
-    {
-      title: "Active Employees",
-      value: "225",
-      icon: <FiUserCheck />,
-      color: "green",
-      change: "+8% this month"
-    },
-    {
-      title: "New Employees",
-      value: "18",
-      icon: <FiUserPlus />,
-      color: "orange",
-      change: "+5% this month"
+      color: "blue"
     },
     {
       title: "Average Salary",
-      value: "₹45,000",
+      value: `₹${averageSalary.toLocaleString("en-IN", {
+        maximumFractionDigits: 0
+      })}`,
       icon: <FiDollarSign />,
-      color: "purple",
-      change: "+3% this month"
+      color: "green"
+    },
+    {
+      title: "Cities",
+      value: totalCities,
+      icon: <FiMapPin />,
+      color: "orange"
+    },
+    {
+      title: "Employee Records",
+      value: totalEmployees,
+      icon: <FiUserPlus />,
+      color: "purple"
     }
-  ];
-
-  const employees = [
-    { id: 101, name: "Rahul Sharma", city: "Hyderabad", salary: "₹45,000" },
-    { id: 102, name: "Priya Reddy", city: "Bangalore", salary: "₹52,000" },
-    { id: 103, name: "Arjun Kumar", city: "Chennai", salary: "₹38,000" },
-    { id: 104, name: "Sneha Rao", city: "Hyderabad", salary: "₹48,000" }
   ];
 
   return (
     <div className="dashboard">
-
       <div className="dashboard-heading">
         <div>
           <h2>Dashboard Overview</h2>
-          <p>Welcome back, Admin! Here's what's happening today.</p>
+          <p>Welcome to Employee Management System.</p>
         </div>
-
-        <button className="add-employee-btn">
-          <FiUserPlus />
-          Add Employee
-        </button>
       </div>
 
-      <div className="stats-grid">
+      {loading && <p>Loading employee data...</p>}
 
-        {stats.map((item, index) => (
-          <div className="stat-card" key={index}>
+      {error && (
+        <p className="error-message">{error}</p>
+      )}
 
-            <div className={`stat-icon ${item.color}`}>
-              {item.icon}
+      {!loading && !error && (
+        <>
+          <div className="stats-grid">
+            {stats.map((item, index) => (
+              <div className="stat-card" key={index}>
+                <div className={`stat-icon ${item.color}`}>
+                  {item.icon}
+                </div>
+
+                <h4>{item.title}</h4>
+                <h2>{item.value}</h2>
+
+                <span className="stat-change">
+                  <FiArrowUpRight />
+                  Live database data
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="employee-section">
+            <div className="section-heading">
+              <div>
+                <h3>Recent Employees</h3>
+                <p>Employee records from the database</p>
+              </div>
             </div>
 
-            <h4>{item.title}</h4>
+            <div className="table-responsive">
+              <table className="employee-table">
+                <thead>
+                  <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>City</th>
+                    <th>Salary</th>
+                  </tr>
+                </thead>
 
-            <h2>{item.value}</h2>
+                <tbody>
+                  {employees.length > 0 ? (
+                    employees.slice(-5).reverse().map(employee => (
+                      <tr key={employee.id}>
+                        <td>EMP-{employee.id}</td>
 
-            <span className="stat-change">
-              <FiArrowUpRight />
-              {item.change}
-            </span>
+                        <td>
+                          {employee.firstname} {employee.lastname}
+                        </td>
 
+                        <td>{employee.age}</td>
+                        <td>{employee.city}</td>
+
+                        <td>
+                          ₹{Number(employee.salary || 0).toLocaleString("en-IN")}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5">
+                        No employee records found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
-        ))}
-
-      </div>
-
-      <div className="employee-section">
-
-        <div className="section-heading">
-          <div>
-            <h3>Recent Employees</h3>
-            <p>Recently added employees</p>
-          </div>
-
-          <button className="view-all-btn">
-            View All
-          </button>
-        </div>
-
-        <div className="table-responsive">
-
-          <table className="employee-table">
-
-            <thead>
-              <tr>
-                <th>Employee ID</th>
-                <th>Name</th>
-                <th>City</th>
-                <th>Salary</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {employees.map((emp) => (
-                <tr key={emp.id}>
-                  <td>EMP-{emp.id}</td>
-                  <td>{emp.name}</td>
-                  <td>{emp.city}</td>
-                  <td>{emp.salary}</td>
-                  <td>
-                    <span className="active-status">
-                      Active
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
+        </>
+      )}
     </div>
   );
 }

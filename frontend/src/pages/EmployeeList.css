@@ -1,0 +1,156 @@
+
+.employee-list-page {
+  min-height: calc(100vh - 85px);
+  padding: 30px;
+  background: #f8fafc;
+}
+
+.employee-list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.employee-list-heading h2 {
+  color: #172554;
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.employee-list-heading p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.employee-count {
+  padding: 9px 16px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.employee-search {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.employee-search input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  outline: none;
+  font-size: 14px;
+}
+
+.employee-search input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.employee-search button {
+  padding: 11px 20px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.employee-search .reset-search-btn {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.employee-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.employee-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+}
+
+.employee-table th {
+  padding: 16px;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.employee-table td {
+  padding: 16px;
+  border-top: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.employee-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.delete-employee-btn {
+  padding: 7px 13px;
+  border: none;
+  border-radius: 6px;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete-employee-btn:hover {
+  background: #fecaca;
+}
+
+.employee-message {
+  padding: 25px;
+  color: #64748b;
+  text-align: center;
+}
+
+.employee-error {
+  padding: 25px;
+  color: #dc2626;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .employee-list-page {
+    padding: 18px 12px;
+  }
+
+  .employee-list-heading {
+    align-items: flex-start;
+  }
+
+  .employee-search {
+    flex-direction: column;
+  }
+
+  .employee-search input,
+  .employee-search button {
+    width: 100%;
+  }
+}
