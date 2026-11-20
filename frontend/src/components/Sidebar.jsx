@@ -1,10 +1,10 @@
 
 import { NavLink } from "react-router-dom";
-
 import {
   FiGrid,
   FiUsers,
   FiUserPlus,
+  FiUser,
   FiSettings,
   FiLogOut
 } from "react-icons/fi";
@@ -13,9 +13,6 @@ import "./Sidebar.css";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const closeSidebar = () => setSidebarOpen(false);
-
-  const getLinkClass = ({ isActive }) =>
-    `sidebar-link ${isActive ? "active" : ""}`;
 
   return (
     <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
@@ -27,41 +24,29 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       <div className="sidebar-menu">
         <p className="menu-heading">MAIN MENU</p>
 
-        <NavLink
-          to="/"
-          end
-          className={getLinkClass}
-          onClick={closeSidebar}
-        >
+        <NavLink to="/" className="sidebar-link" onClick={closeSidebar}>
           <FiGrid />
           <span>Dashboard</span>
         </NavLink>
 
-        <NavLink
-          to="/employees"
-          className={getLinkClass}
-          onClick={closeSidebar}
-        >
+        <NavLink to="/employees" className="sidebar-link" onClick={closeSidebar}>
           <FiUsers />
           <span>Employees</span>
         </NavLink>
 
-        <NavLink
-          to="/add-employee"
-          className={getLinkClass}
-          onClick={closeSidebar}
-        >
+        <NavLink to="/add-employee" className="sidebar-link" onClick={closeSidebar}>
           <FiUserPlus />
           <span>Add Employee</span>
         </NavLink>
 
         <p className="menu-heading">GENERAL</p>
 
-        <NavLink
-          to="/settings"
-          className={getLinkClass}
-          onClick={closeSidebar}
-        >
+        <NavLink to="/profile" className="sidebar-link" onClick={closeSidebar}>
+          <FiUser />
+          <span>My Profile</span>
+        </NavLink>
+
+        <NavLink to="/settings" className="sidebar-link" onClick={closeSidebar}>
           <FiSettings />
           <span>Settings</span>
         </NavLink>

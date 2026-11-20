@@ -1,0 +1,125 @@
+
+.settings-page {
+  padding: 30px;
+}
+
+.settings-heading {
+  margin-bottom: 25px;
+}
+
+.settings-heading h2 {
+  color: #1e293b;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.settings-heading p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.settings-card {
+  max-width: 800px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.settings-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.settings-section-title svg {
+  color: #4f46e5;
+  font-size: 21px;
+}
+
+.settings-section-title h3 {
+  color: #1e293b;
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.settings-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0;
+}
+
+.settings-option strong {
+  display: block;
+  color: #1e293b;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.settings-option p {
+  color: #64748b;
+  font-size: 13px;
+  margin: 0;
+}
+
+.settings-option input[type="checkbox"] {
+  width: 19px;
+  height: 19px;
+  cursor: pointer;
+  accent-color: #4f46e5;
+  flex-shrink: 0;
+}
+
+.settings-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 22px 0;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 28px;
+}
+
+.settings-actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #4f46e5;
+  color: #ffffff;
+  border: none;
+  border-radius: 7px;
+  padding: 11px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.settings-actions button:hover {
+  background: #4338ca;
+}
+
+@media (max-width: 600px) {
+  .settings-page {
+    padding: 18px;
+  }
+
+  .settings-card {
+    padding: 20px;
+  }
+
+  .settings-option {
+    gap: 12px;
+  }
+
+  .settings-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}

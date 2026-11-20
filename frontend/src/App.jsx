@@ -1,12 +1,17 @@
 
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 
 import Dashboard from "./pages/Dashboard";
 import EmployeeList from "./pages/EmployeeList";
 import AddEmployee from "./pages/AddEmployee";
+import EditEmployee from "./pages/EditEmployee";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
@@ -41,15 +46,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="/"
@@ -74,6 +72,33 @@ function App() {
           element={
             <DashboardLayout>
               <AddEmployee />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/edit-employee/:id"
+          element={
+            <DashboardLayout>
+              <EditEmployee />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <DashboardLayout>
+              <Profile />
+            </DashboardLayout>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <DashboardLayout>
+              <Settings />
             </DashboardLayout>
           }
         />

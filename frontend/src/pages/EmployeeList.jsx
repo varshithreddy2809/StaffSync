@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getAllEmployees,
   getEmployeeByFirstName,
@@ -8,11 +9,14 @@ import {
 import "./EmployeeList.css";
 
 function EmployeeList() {
+  const navigate = useNavigate();
+
   const [employees, setEmployees] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Fetch all employees
   const fetchEmployees = async () => {
     try {
       setLoading(true);
@@ -22,28 +26,30 @@ function EmployeeList() {
       setEmployees(response.data);
     } catch (err) {
       console.error("Error fetching employees:", err);
+      setEmployees([]);
       setError("Unable to load employees.");
     } finally {
       setLoading(false);
     }
   };
 
+  // Load employees when page opens
   useEffect(() => {
     let ignore = false;
 
     const loadEmployees = async () => {
       try {
-        setError("");
-
         const response = await getAllEmployees();
 
         if (!ignore) {
           setEmployees(response.data);
+          setError("");
         }
       } catch (err) {
         console.error("Error fetching employees:", err);
 
         if (!ignore) {
+          setEmployees([]);
           setError("Unable to load employees.");
         }
       } finally {
@@ -60,6 +66,7 @@ function EmployeeList() {
     };
   }, []);
 
+  // Search by first name
   const handleSearch = async (e) => {
     e.preventDefault();
 
@@ -75,7 +82,9 @@ function EmployeeList() {
       const response = await getEmployeeByFirstName(search.trim());
       const data = response.data;
 
-      setEmployees(Array.isArray(data) ? data : data ? [data] : []);
+      setEmployees(
+        Array.isArray(data) ? data : data ? [data] : []
+      );
     } catch (err) {
       console.error("Search error:", err);
       setEmployees([]);
@@ -85,6 +94,7 @@ function EmployeeList() {
     }
   };
 
+  // Delete employee
   const handleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this employee?"
@@ -94,27 +104,40 @@ function EmployeeList() {
 
     try {
       await deleteEmployee(id);
+
       alert("Employee deleted successfully!");
-      fetchEmployees();
+
+      await fetchEmployees();
     } catch (err) {
       console.error("Delete error:", err);
       alert("Unable to delete employee.");
     }
   };
 
+  // Reset search
+  const handleReset = () => {
+    setSearch("");
+    fetchEmployees();
+  };
+
   return (
     <div className="employee-list-page">
+
       <div className="employee-list-heading">
         <div>
           <h2>Employees</h2>
           <p>Manage all employee records</p>
         </div>
+
         <span className="employee-count">
           Total: {employees.length}
         </span>
       </div>
 
-      <form className="employee-search" onSubmit={handleSearch}>
+      <form
+        className="employee-search"
+        onSubmit={handleSearch}
+      >
         <input
           type="text"
           placeholder="Search by first name..."
@@ -122,29 +145,36 @@ function EmployeeList() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <button type="submit">Search</button>
+        <button type="submit">
+          Search
+        </button>
 
         <button
           type="button"
           className="reset-search-btn"
-          onClick={() => {
-            setSearch("");
-            fetchEmployees();
-          }}
+          onClick={handleReset}
         >
           Reset
         </button>
       </form>
 
       <div className="employee-table-container">
+
         {loading ? (
-          <p className="employee-message">Loading employees...</p>
+          <p className="employee-message">
+            Loading employees...
+          </p>
         ) : error ? (
-          <p className="employee-error">{error}</p>
+          <p className="employee-error">
+            {error}
+          </p>
         ) : employees.length === 0 ? (
-          <p className="employee-message">No employees found.</p>
+          <p className="employee-message">
+            No employees found.
+          </p>
         ) : (
           <table className="employee-table">
+
             <thead>
               <tr>
                 <th>ID</th>
@@ -166,12 +196,26 @@ function EmployeeList() {
                   <td>{employee.lastname}</td>
                   <td>{employee.age}</td>
                   <td>{employee.city}</td>
+
                   <td>
-                    ₹{Number(employee.salary).toLocaleString("en-IN")}
+                    ₹{Number(employee.salary || 0).toLocaleString("en-IN")}
                   </td>
+
                   <td>{employee.address}</td>
-                  <td>
+
+                  <td className="employee-action-buttons">
                     <button
+                      type="button"
+                      className="edit-employee-btn"
+                      onClick={() =>
+                        navigate(`/edit-employee/${employee.id}`)
+                      }
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
                       className="delete-employee-btn"
                       onClick={() => handleDelete(employee.id)}
                     >
@@ -181,12 +225,13 @@ function EmployeeList() {
                 </tr>
               ))}
             </tbody>
+
           </table>
         )}
+
       </div>
     </div>
   );
 }
 
 export default EmployeeList;
- 
