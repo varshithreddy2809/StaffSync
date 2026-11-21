@@ -1,63 +1,71 @@
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
-  FiGrid,
-  FiUsers,
-  FiUserPlus,
-  FiUser,
-  FiSettings,
-  FiLogOut
+    FiGrid,
+    FiUsers,
+    FiUserPlus,
+    FiUser,
+    FiSettings,
+    FiLogOut
 } from "react-icons/fi";
-
 import "./Sidebar.css";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
-  const closeSidebar = () => setSidebarOpen(false);
+    const navigate = useNavigate();
 
-  return (
-    <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
-      <div className="sidebar-logo">
-        <h2>EMS</h2>
-        <span>Employee Portal</span>
-      </div>
+    const closeSidebar = () => setSidebarOpen(false);
 
-      <div className="sidebar-menu">
-        <p className="menu-heading">MAIN MENU</p>
+    const handleLogout = () => {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("adminEmail");
+        setSidebarOpen(false);
+        navigate("/login", { replace: true });
+    };
 
-        <NavLink to="/" className="sidebar-link" onClick={closeSidebar}>
-          <FiGrid />
-          <span>Dashboard</span>
-        </NavLink>
+    return (
+        <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
+            <div className="sidebar-logo">
+                <h2>EMS</h2>
+                <span>Employee Portal</span>
+            </div>
 
-        <NavLink to="/employees" className="sidebar-link" onClick={closeSidebar}>
-          <FiUsers />
-          <span>Employees</span>
-        </NavLink>
+            <div className="sidebar-menu">
+                <p className="menu-heading">MAIN MENU</p>
 
-        <NavLink to="/add-employee" className="sidebar-link" onClick={closeSidebar}>
-          <FiUserPlus />
-          <span>Add Employee</span>
-        </NavLink>
+                <NavLink to="/" className="sidebar-link" onClick={closeSidebar}>
+                    <FiGrid />
+                    <span>Dashboard</span>
+                </NavLink>
 
-        <p className="menu-heading">GENERAL</p>
+                <NavLink to="/employees" className="sidebar-link" onClick={closeSidebar}>
+                    <FiUsers />
+                    <span>Employees</span>
+                </NavLink>
 
-        <NavLink to="/profile" className="sidebar-link" onClick={closeSidebar}>
-          <FiUser />
-          <span>My Profile</span>
-        </NavLink>
+                <NavLink to="/add-employee" className="sidebar-link" onClick={closeSidebar}>
+                    <FiUserPlus />
+                    <span>Add Employee</span>
+                </NavLink>
 
-        <NavLink to="/settings" className="sidebar-link" onClick={closeSidebar}>
-          <FiSettings />
-          <span>Settings</span>
-        </NavLink>
-      </div>
+                <p className="menu-heading">GENERAL</p>
 
-      <div className="sidebar-bottom">
-        <FiLogOut />
-        <span>Logout</span>
-      </div>
-    </aside>
-  );
+                <NavLink to="/profile" className="sidebar-link" onClick={closeSidebar}>
+                    <FiUser />
+                    <span>My Profile</span>
+                </NavLink>
+
+                <NavLink to="/settings" className="sidebar-link" onClick={closeSidebar}>
+                    <FiSettings />
+                    <span>Settings</span>
+                </NavLink>
+            </div>
+
+            <div className="sidebar-bottom" onClick={handleLogout}>
+                <FiLogOut />
+                <span>Logout</span>
+            </div>
+        </aside>
+    );
 }
 
 export default Sidebar;

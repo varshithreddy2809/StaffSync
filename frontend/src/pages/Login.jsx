@@ -1,10 +1,19 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import {
+  FiMail,
+  FiLock,
+  FiEye,
+  FiEyeOff,
+  FiLogIn,
+} from "react-icons/fi";
 import "./Login.css";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -13,6 +22,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +40,7 @@ function Login() {
     setMessage("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -47,16 +57,42 @@ function Login() {
 
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length === 0) {
-      setMessage("Login form is ready. Backend API integration is pending.");
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setMessage("");
+
+      const response = await axios.post(
+        "http://localhost:8081/api/admin/login",
+        {
+          email: formData.email.trim(),
+          password: formData.password,
+        }
+      );
+
+      const token = response.data;
+
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("adminEmail", formData.email.trim());
+
+      navigate("/");
+    } catch (error) {
+      if (error.response?.status === 401) {
+        setMessage("Invalid email or password");
+      } else {
+        setMessage("Unable to connect to server. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="auth-page">
       <div className="auth-container">
-
-        {/* Left Section */}
         <div className="auth-left">
           <div className="auth-brand">
             <div className="brand-logo">EMS</div>
@@ -76,24 +112,19 @@ function Login() {
           </div>
         </div>
 
-        {/* Right Section */}
         <div className="auth-right">
           <div className="login-form-container">
-
             <div className="login-heading">
               <h2>Sign In</h2>
               <p>Enter your credentials to access your account.</p>
             </div>
 
-            <form onSubmit={handleSubmit} noValidate>
-
-              {/* Email */}
+            <form onSubmit={handleSubmit} noValidate autoComplete="off">
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
 
                 <div className={`input-wrapper ${errors.email ? "input-error" : ""}`}>
                   <FiMail className="input-icon" />
-
                   <input
                     type="email"
                     id="email"
@@ -101,6 +132,7 @@ function Login() {
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={handleChange}
+                    autoComplete="off"
                   />
                 </div>
 
@@ -109,13 +141,11 @@ function Login() {
                 )}
               </div>
 
-              {/* Password */}
               <div className="form-group">
                 <label htmlFor="password">Password</label>
 
                 <div className={`input-wrapper ${errors.password ? "input-error" : ""}`}>
                   <FiLock className="input-icon" />
-
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
@@ -123,6 +153,7 @@ function Login() {
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleChange}
+                    autoComplete="off"
                   />
 
                   <button
@@ -144,25 +175,26 @@ function Login() {
                 <Link to="/forgot-password">Forgot Password?</Link>
               </div>
 
-              <button type="submit" className="login-button">
+              <button
+                type="submit"
+                className="login-button"
+                disabled={loading}
+              >
                 <FiLogIn />
-                <span>Sign In</span>
+                <span>{loading ? "Signing In..." : "Sign In"}</span>
               </button>
 
               {message && (
                 <p className="login-message">{message}</p>
               )}
-
             </form>
 
             <div className="register-link">
               Don't have an account?
               <Link to="/register"> Create Account</Link>
             </div>
-
           </div>
         </div>
-
       </div>
     </div>
   );

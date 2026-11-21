@@ -1,55 +1,61 @@
 
 package com.springproject01.employeeserviceportal.config;
 
+import java.util.List;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.http.HttpStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-        http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
-            );
+	public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+	}
 
-        return http.build();
-    }
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+		http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+						.requestMatchers("/api/admin/register", "/api/admin/login").permitAll().anyRequest()
+						.authenticated())
+				.exceptionHandling(exception -> exception
+						.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        CorsConfiguration configuration = new CorsConfiguration();
+		return http.build();
+	}
 
-        configuration.setAllowedOrigins(
-            List.of("http://localhost:5173")
-        );
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
 
-        configuration.setAllowedMethods(
-            List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
-        );
+		CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedHeaders(
-            List.of("*")
-        );
+		configuration.setAllowedOrigins(List.of("http://localhost:5173"));
 
-        UrlBasedCorsConfigurationSource source =
-            new UrlBasedCorsConfigurationSource();
+		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        source.registerCorsConfiguration("/**", configuration);
+		configuration.setAllowedHeaders(List.of("*"));
 
-        return source;
-    }
+		configuration.setExposedHeaders(List.of("Authorization"));
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+		source.registerCorsConfiguration("/**", configuration);
+
+		return source;
+	}
 }

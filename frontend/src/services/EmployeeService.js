@@ -3,34 +3,48 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8081/api/v1";
 
-// Get all employees
+const employeeAPI = axios.create({
+    baseURL: BASE_URL
+});
+
+employeeAPI.interceptors.request.use(
+    (config) => {
+
+        const token = sessionStorage.getItem("token");
+
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 export const getAllEmployees = () => {
-    return axios.get(`${BASE_URL}/getallemployees`);
+    return employeeAPI.get("/getallemployees");
 };
 
-// Get employee by ID
 export const getEmployeeById = (id) => {
-    return axios.get(`${BASE_URL}/getemployeebyid/${id}`);
+    return employeeAPI.get(`/getemployeebyid/${id}`);
 };
 
-// Create employee
 export const createEmployee = (employee) => {
-    return axios.post(`${BASE_URL}/createmployee`, employee);
+    return employeeAPI.post("/createmployee", employee);
 };
 
-// Update employee
 export const updateEmployee = (id, employee) => {
-    return axios.put(`${BASE_URL}/updateemployyebyid/${id}`, employee);
+    return employeeAPI.put(`/updateemployyebyid/${id}`, employee);
 };
 
-// Delete employee
 export const deleteEmployee = (id) => {
-    return axios.delete(`${BASE_URL}/deleteemployyebyid/${id}`);
+    return employeeAPI.delete(`/deleteemployyebyid/${id}`);
 };
 
-// Search employee by first name
 export const getEmployeeByFirstName = (firstname) => {
-    return axios.get(
-        `${BASE_URL}/getemployyebyfirstname/${encodeURIComponent(firstname)}`
+    return employeeAPI.get(
+        `/getemployyebyfirstname/${encodeURIComponent(firstname)}`
     );
 };
